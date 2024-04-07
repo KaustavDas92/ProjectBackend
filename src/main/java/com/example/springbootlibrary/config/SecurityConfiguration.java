@@ -26,9 +26,14 @@ public class SecurityConfiguration {
 //                .oauth2ResourceServer(httpSecurityOAuth2ResourceServerConfigurer ->
 //                        httpSecurityOAuth2ResourceServerConfigurer.jwt(Customizer.withDefaults()));
 
-        security.authorizeHttpRequests(configurer ->
-                configurer.requestMatchers("/api/books/secure/**")
-                        .authenticated())
+        security
+
+                .authorizeHttpRequests(configurer ->
+                configurer
+                        .requestMatchers("/api/books/secure/**","/api/reviews/secure/**")
+                        .authenticated()
+                        .anyRequest().
+                        permitAll())
                 .oauth2ResourceServer().jwt();
 
         //add cors filters

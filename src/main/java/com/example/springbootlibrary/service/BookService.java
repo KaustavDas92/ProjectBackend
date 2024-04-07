@@ -4,6 +4,7 @@ import com.example.springbootlibrary.dao.BookRepository;
 import com.example.springbootlibrary.dao.CheckoutRepository;
 import com.example.springbootlibrary.entity.Book;
 import com.example.springbootlibrary.entity.Checkout;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ public class BookService {
     private BookRepository bookRepository;
     private CheckoutRepository checkoutRepository;
 
+    @Autowired
     public BookService(BookRepository bookRepository, CheckoutRepository checkoutRepository) {
         this.bookRepository = bookRepository;
         this.checkoutRepository = checkoutRepository;
@@ -25,9 +27,11 @@ public class BookService {
 
     public Book checkoutBook (String userEmail,Long bookId) throws Exception {
         Optional<Book> book=bookRepository.findById(bookId);
+        System.out.println("book="+book.get().getId());
         Checkout validateCheckout=checkoutRepository.findByUserEmailAndBookId(userEmail,bookId);
+        System.out.println("validate checkout="+validateCheckout);
 
-        if(!book.isPresent() || validateCheckout != null || book.get().getCopies_available() <=0){
+        if(book.isEmpty() || validateCheckout != null || book.get().getCopies_available() <=0){
             throw new Exception("book not found or book already checked out");
         }
 
