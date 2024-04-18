@@ -30,7 +30,10 @@ public class SecurityConfiguration {
 
                 .authorizeHttpRequests(configurer ->
                 configurer
-                        .requestMatchers("/api/books/secure/**","/api/reviews/secure/**")
+                        .requestMatchers(
+                                "/api/books/secure/**",
+                                "/api/reviews/secure/**",
+                                "/api/messages/secure/**")
                         .authenticated()
                         .anyRequest().
                         permitAll())
